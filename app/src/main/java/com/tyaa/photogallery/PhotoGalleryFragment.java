@@ -11,9 +11,7 @@ import android.widget.GridView;
 
 import java.io.IOException;
 
-/**
- * Created by Юлия on 19.09.2015.
- */
+//тут мы становимся гордым владельцем пустого экрана
 public class PhotoGalleryFragment extends Fragment{
 
     private static final String TAG = "PhotoGalleryFragment";
@@ -35,11 +33,15 @@ public class PhotoGalleryFragment extends Fragment{
         mGridView = (GridView)v.findViewById(R.id.gridView);
         return v;
     }
-
+//из-за задержки ответа сервера получение данных происходит в фоновом потоке
     private class FetchItemsTask extends AsyncTask<Void,Void,Void> {
         @Override
         protected Void doInBackground(Void... params) {
-            new FlickrFetchr().fetchItems();
+            try {
+                new FlickrFetchr().getUrl("http://localhost/rest/getItemsPhoto.php");
+            }catch(Exception ex){
+                
+            }
             return null;
         }
     }
