@@ -20,7 +20,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".PhotoGalleryActivity"
+            android:name=".GalleryActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop">
 

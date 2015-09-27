@@ -21,14 +21,7 @@ public class SiteConnector {
 
     public static final String TAG = "SiteConnector";
     public static final String PREF_SEARCH_QUERY = "searchQuery";
-    public static final String PREF_LAST_RESULT_ID = "lastResultId";
-    private static final String ENDPOINT = "https://api.flickr.com/services/rest/";
-    private static final String OPRST_PHOTO_ENDPOINT = "http://weed.esy.es/rest/getItemsPhoto.php";
-    private static final String API_KEY = "4f721bbafa75bf6d2cb5af54f937bb70";
-    private static final String METHOD_GET_RECENT = "flickr.photos.getRecent";
-    private static final String PARAM_EXTRAS = "extras";
-    private static final String EXTRA_SMALL_URL = "url_s";
-    private static final String METHOD_SEARCH = "flickr.photos.search";
+    private static final String OPRST_PHOTO_ENDPOINT = "http://oprst.com.ua/rest/getItemsPhoto.php";
     private static final String PARAM_TEXT = "text";
     private static final String XML_PHOTO = "photo";
 
@@ -77,7 +70,7 @@ public class SiteConnector {
     public String getUrl(String urlSpec) throws IOException {
         return new String(getUrlBytes(urlSpec));
     }
-    public ArrayList<PhotoCollage> fetchPhotoItems(int offset,int lenght){
+    public ArrayList<GalleryItem> fetchPhotoItems(int offset,int lenght){
         JSONArray jsonValues=null;
         try{
             String url=Uri.parse(OPRST_PHOTO_ENDPOINT).buildUpon()
@@ -95,11 +88,11 @@ public class SiteConnector {
         }
         return arrayFromJson(jsonValues);
     }
-    public ArrayList<PhotoCollage> arrayFromJson(JSONArray json){
-        ArrayList<PhotoCollage> photoCollages = new ArrayList<PhotoCollage>();
+    public ArrayList<GalleryItem> arrayFromJson(JSONArray json){
+        ArrayList<GalleryItem> photoCollages = new ArrayList<GalleryItem>();
         try{
         for (int index = 0; index < json.length(); ++index) {
-            PhotoCollage collage = PhotoCollage.fromJson(json.getJSONObject(index));
+            GalleryItem collage = PhotoGalleryItem.fromJson(json.getJSONObject(index));
             if (null != collage) photoCollages.add(collage);
         }}catch(JSONException ioj){
             Log.e(TAG, "Failed to convert json",ioj);

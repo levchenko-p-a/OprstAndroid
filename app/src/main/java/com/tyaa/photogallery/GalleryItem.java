@@ -1,11 +1,13 @@
 package com.tyaa.photogallery;
 
-public abstract class Collage {
-    protected int id;
-    protected String pagetitle;
-    protected String alias;
-    protected String caption;
-    protected boolean our;
+public abstract class GalleryItem {
+    protected static final String OPRST_ENDPOINT = "http://oprst.com.ua/";
+    private int id;
+    private String pagetitle;
+    private String alias;
+    private String caption;
+    private String preview;
+    private boolean our;
 
     public boolean isOur() {
         return our;
@@ -16,14 +18,13 @@ public abstract class Collage {
     }
 
     public String getPreview() {
-        return preview;
+        return OPRST_ENDPOINT+preview;
     }
 
     public void setPreview(String preview) {
         this.preview = preview;
     }
 
-    private String preview;
 
     public String getCaption() {
         return caption;
