@@ -6,7 +6,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.GridView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
 
 //тут мы становимся гордым владельцем пустого экрана
 public class PhotoGalleryFragment extends Fragment{
@@ -14,6 +18,7 @@ public class PhotoGalleryFragment extends Fragment{
     private static final String TAG = "PhotoGalleryFragment";
 
     GridView mPhotoGrid;
+    ArrayList<PhotoCollage> mPhotoCollages;
     GridView mVideoGrid;
 
     @Override
@@ -29,19 +34,31 @@ public class PhotoGalleryFragment extends Fragment{
         View v = inflater.inflate(R.layout.fragment_photo_gallery, container,
                 false);
         mPhotoGrid = (GridView)v.findViewById(R.id.photoGrid);
+        setupAdapter1();
         mVideoGrid = (GridView)v.findViewById(R.id.videoGrid);
         return v;
     }
-//из-за задержки ответа сервера получение данных происходит в фоновом потоке
-    private class FetchItemsTask extends AsyncTask<Void,Void,Void> {
-        @Override
-        protected Void doInBackground(Void... params) {
-            try {
-                new SiteConnector().fetchPhotoItems(0,5);
-            }catch(Exception ex){
+    void setupAdapter1() {
+        if (getActivity() == null || mPhotoGrid == null) return;
 
-            }
-            return null;
+        if (mPhotoCollages != null) {
+            mPhotoGrid.setAdapter(new ArrayAdapter<PhotoCollage>(getActivity(),
+                    android.R.layout.simple_gallery_item, mPhotoCollages));
+        } else {
+            mPhotoGrid.setAdapter(null);
+        }
+    }
+
+    //из-за задержки ответа сервера получение данных происходит в фоновом потоке
+    private class FetchItemsTask extends AsyncTask<Void,Void,ArrayList<PhotoCollage>> {
+        @Override
+        protected ArrayList<PhotoCollage> doInBackground(Void... params) {
+            return new SiteConnector().fetchPhotoItems(0, 5);
+        }
+        @Override
+        protected void onPostExecute(ArrayList<PhotoCollage> photoCollages){
+            mPhotoCollages=photoCollages;
+            setupAdapter1();
         }
     }
 }

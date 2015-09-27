@@ -1,5 +1,6 @@
 package com.tyaa.photogallery;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -8,17 +9,24 @@ import org.json.JSONObject;
 public class PhotoCollage extends Collage{
     public PhotoCollage(){
     }
-    public PhotoCollage(int id, String pagetitle, String alias, String caption) {
+    public PhotoCollage(int id, String pagetitle, String alias, String caption,boolean our) {
         this.id = id;
         this.pagetitle = pagetitle;
         this.alias = alias;
         this.caption = caption;
+        this.our=our;
     }
     public static PhotoCollage fromJson(JSONObject object) {
-        int id = object.optInt("id", 0);
-        String pagetitle= object.optString("pagetitle","");
-        String alias= object.optString("alias", "");
-        String caption= object.optString("caption", "");
-        return new PhotoCollage(id,pagetitle,alias,caption);
+        try {
+        int id = object.getInt("id");
+        String pagetitle= object.getString("pagetitle");
+        String alias= object.getString("alias");
+        String caption= object.getString("caption");
+        String our = object.getString("our");
+        return new PhotoCollage(id,pagetitle,alias,caption,Boolean.getBoolean(our));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

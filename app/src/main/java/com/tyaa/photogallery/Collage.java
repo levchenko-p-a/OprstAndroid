@@ -5,6 +5,15 @@ public abstract class Collage {
     protected String pagetitle;
     protected String alias;
     protected String caption;
+    protected boolean our;
+
+    public boolean isOur() {
+        return our;
+    }
+
+    public void setOur(boolean our) {
+        this.our = our;
+    }
 
     public String getPreview() {
         return preview;
