@@ -11,4 +11,6 @@
     <string name="stop_polling">Stop polling</string>
     <string name="new_pictures_title">New PhotoGallery Pictures</string>
     <string name="new_pictures_text">You have new pictures in PhotoGallery.</string>
+    <string name="video_grid_title">ФотOS</string>
+    <string name="photo_grid_title">ВидOS</string>
 </resources>
