@@ -16,7 +16,7 @@ import java.util.Map;
  * Created by Павел on 27.09.2015.
  */
 public class ThumbDownloader <Token> extends HandlerThread {
-    private static final String TAG = "ThumbnailDownloader";
+    private static final String TAG = "ThumbDownloader";
     private static final int MESSAGE_DOWNLOAD = 0;
     Handler mHandler;
     Map<Token, String> requestMap =
@@ -77,9 +77,7 @@ public class ThumbDownloader <Token> extends HandlerThread {
     public void queueThumbnail(Token token, String url) {
         Log.i(TAG, "Got an URL: " + url);
         requestMap.put(token, url);
-        mHandler
-                .obtainMessage(MESSAGE_DOWNLOAD, token)
-                .sendToTarget();
+        mHandler.obtainMessage(MESSAGE_DOWNLOAD, token).sendToTarget();
     }
 
 }

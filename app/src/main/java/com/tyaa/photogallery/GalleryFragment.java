@@ -13,6 +13,10 @@ import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
+import org.json.JSONObject;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 
 //тут мы становимся гордым владельцем пустого экрана
@@ -21,7 +25,8 @@ public class GalleryFragment extends Fragment{
 
     GridView mPhotoGrid;
     GridView mVideoGrid;
-    ArrayList<GalleryItem> mGalleryItems;
+    ArrayList<PhotoGalleryItem> mPhotoGalleryItems;
+    ArrayList<VideoGalleryItem> mVideoGalleryItems;
     ThumbDownloader<ImageView> mThumbThread;
 
 
@@ -30,7 +35,8 @@ public class GalleryFragment extends Fragment{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        new FetchItemsTask().execute(0, 5);
+        new FetchPhotoItemsTask().execute(0, 5);
+        new FetchVideoItemsTask().execute(0, 5);
         mThumbThread = new ThumbDownloader(new Handler());
         mThumbThread.setListener(new ThumbDownloader.Listener<ImageView>() {
             public void onThumbnailDownloaded(ImageView imageView, Bitmap thumbnail) {
@@ -39,14 +45,13 @@ public class GalleryFragment extends Fragment{
                 }
             }
         });
-
         mThumbThread.start();
         mThumbThread.getLooper();
         Log.i(TAG, "Background thread started");
 
     }
-    private class GalleryItemAdapter extends ArrayAdapter<GalleryItem> {
-        public GalleryItemAdapter(ArrayList<GalleryItem> items) {
+    private class GalleryItemAdapter<T> extends ArrayAdapter<T> {
+        public GalleryItemAdapter(ArrayList<T> items) {
             super(getActivity(), 0, items);
         }
         @Override
@@ -59,8 +64,17 @@ public class GalleryFragment extends Fragment{
             ImageView imageView = (ImageView)convertView
                     .findViewById(R.id.gallery_item_imageView);
             imageView.setImageResource(R.drawable.photo_default);
-            GalleryItem item = getItem(position);
-            mThumbThread.queueThumbnail(imageView, item.getPreview());
+            T item = getItem(position);
+            try {
+                String url=item.getClass().getMethod("getPreview").invoke(item).toString();
+                mThumbThread.queueThumbnail(imageView,url);
+            } catch (InvocationTargetException ioit) {
+                Log.e(TAG, "Failed to invoke method", ioit);
+            } catch (NoSuchMethodException ionsm) {
+                Log.e(TAG, "Failed to find method", ionsm);
+            } catch (IllegalAccessException ioia) {
+                Log.e(TAG, "Failed access to private method", ioia);
+            }
             return convertView;
         }
     }
@@ -70,8 +84,9 @@ public class GalleryFragment extends Fragment{
         View v = inflater.inflate(R.layout.fragment_gallery, container,
                 false);
         mPhotoGrid = (GridView)v.findViewById(R.id.photoGrid);
-        setupAdapter();
+        setupPhotoAdapter();
         mVideoGrid = (GridView)v.findViewById(R.id.videoGrid);
+        setupVideoAdapter();
         return v;
     }
     @Override
@@ -85,26 +100,44 @@ public class GalleryFragment extends Fragment{
         super.onDestroyView();
         mThumbThread.clearQueue();
     }
-    void setupAdapter() {
+    void setupPhotoAdapter() {
         if (getActivity() == null || mPhotoGrid == null) return;
-
-        if (mGalleryItems != null) {
-            mPhotoGrid.setAdapter(new GalleryItemAdapter(mGalleryItems));
+        if (mPhotoGalleryItems != null) {
+            mPhotoGrid.setAdapter(new GalleryItemAdapter(mPhotoGalleryItems));
         } else {
             mPhotoGrid.setAdapter(null);
         }
     }
-
-    //из-за задержки ответа сервера получение данных происходит в фоновом потоке
-    private class FetchItemsTask extends AsyncTask<Integer,Void,ArrayList<GalleryItem>> {
+    //получение фото галереи в фоновом потоке
+    private class FetchPhotoItemsTask extends AsyncTask<Integer,Void,ArrayList<PhotoGalleryItem>> {
         @Override
-        protected ArrayList<GalleryItem> doInBackground(Integer... params) {
-            return new SiteConnector().fetchPhotoItems(params[0], params[1]);
+        protected ArrayList<PhotoGalleryItem> doInBackground(Integer... params) {
+            return new SiteConnector().photoGallery.fetchItems(params[0], params[1],new PhotoGalleryItem());
         }
         @Override
-        protected void onPostExecute(ArrayList<GalleryItem> photoCollages){
-            mGalleryItems =photoCollages;
-            setupAdapter();
+        protected void onPostExecute(ArrayList<PhotoGalleryItem> photoCollages){
+            mPhotoGalleryItems =photoCollages;
+            setupPhotoAdapter();
+        }
+    }
+    void setupVideoAdapter() {
+        if (getActivity() == null || mVideoGrid == null) return;
+        if (mVideoGalleryItems != null) {
+            mVideoGrid.setAdapter(new GalleryItemAdapter(mVideoGalleryItems));
+        } else {
+            mVideoGrid.setAdapter(null);
+        }
+    }
+    //получение видео галереи в фоновом потоке
+    private class FetchVideoItemsTask extends AsyncTask<Integer,Void,ArrayList<VideoGalleryItem>> {
+        @Override
+        protected ArrayList<VideoGalleryItem> doInBackground(Integer... params) {
+            return new SiteConnector().videoGallery.fetchItems(params[0], params[1],new VideoGalleryItem());
+        }
+        @Override
+        protected void onPostExecute(ArrayList<VideoGalleryItem> photoCollages){
+            mVideoGalleryItems =photoCollages;
+            setupVideoAdapter();
         }
     }
 }

@@ -1,5 +1,8 @@
 package com.tyaa.photogallery;
 
+import java.net.URI;
+import java.net.URL;
+
 public abstract class GalleryItem {
     protected static final String OPRST_ENDPOINT = "http://oprst.com.ua/";
     private int id;
@@ -7,6 +10,7 @@ public abstract class GalleryItem {
     private String alias;
     private String caption;
     private String preview;
+
     private boolean our;
 
     public boolean isOur() {
@@ -24,7 +28,6 @@ public abstract class GalleryItem {
     public void setPreview(String preview) {
         this.preview = preview;
     }
-
 
     public String getCaption() {
         return caption;

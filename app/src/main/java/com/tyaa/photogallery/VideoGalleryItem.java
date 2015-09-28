@@ -13,8 +13,7 @@ public class VideoGalleryItem extends GalleryItem {
     public void setYoutube(String youtube) {
         this.youtube = youtube;
     }
-    public VideoGalleryItem(){
-    }
+    public VideoGalleryItem(){}
     public VideoGalleryItem(int id, String pagetitle, String alias, String caption, String preview,boolean our, String youtube) {
         setId(id);
         setPagetitle(pagetitle);
