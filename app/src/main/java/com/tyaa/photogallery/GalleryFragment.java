@@ -29,8 +29,6 @@ public class GalleryFragment extends Fragment{
     ArrayList<VideoGalleryItem> mVideoGalleryItems;
     ThumbDownloader<ImageView> mThumbThread;
 
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,7 +110,7 @@ public class GalleryFragment extends Fragment{
     private class FetchPhotoItemsTask extends AsyncTask<Integer,Void,ArrayList<PhotoGalleryItem>> {
         @Override
         protected ArrayList<PhotoGalleryItem> doInBackground(Integer... params) {
-            return new SiteConnector().photoGallery.fetchItems(params[0], params[1],new PhotoGalleryItem());
+            return new SiteConnector().fetchPhotoItems(params[0], params[1]);
         }
         @Override
         protected void onPostExecute(ArrayList<PhotoGalleryItem> photoCollages){
@@ -132,7 +130,7 @@ public class GalleryFragment extends Fragment{
     private class FetchVideoItemsTask extends AsyncTask<Integer,Void,ArrayList<VideoGalleryItem>> {
         @Override
         protected ArrayList<VideoGalleryItem> doInBackground(Integer... params) {
-            return new SiteConnector().videoGallery.fetchItems(params[0], params[1],new VideoGalleryItem());
+            return new SiteConnector().fetchVideoItems(params[0], params[1]);
         }
         @Override
         protected void onPostExecute(ArrayList<VideoGalleryItem> photoCollages){
