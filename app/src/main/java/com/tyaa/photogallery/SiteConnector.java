@@ -20,12 +20,11 @@ import java.util.ArrayList;
  * Created by Юлия on 19.09.2015.
  */
 public class SiteConnector {
-
     public static final String TAG = "SiteConnector";
-    public static final String PREF_SEARCH_QUERY = "searchQuery";
     private static final String OPRST_PHOTO_ENDPOINT = "http://oprst.com.ua/rest/getItemsPhoto.php";
-    private static final String OPRST_VIDEO_ENDPOINT = "http://oprst.com.ua/rest/getItemsPhoto.php";
-
+    private static final String OPRST_VIDEO_ENDPOINT = "http://oprst.com.ua/rest/getItemsVideo.php";
+    private static final String OPRST_PHOTO_GALLERY_ENDPOINT =
+            "http://oprst.com.ua/rest/getItemsPhotoGallery.php";
     private int mCount;
 
     public int getCount() {
@@ -40,14 +39,29 @@ public class SiteConnector {
         return new String(getUrlBytes(urlSpec));
     }
     //превращает ответ сервера в JSON объект
-    JSONObject getJSONObject(String urlSpec) throws IOException, JSONException {
-        String result=new String(getUrlBytes(urlSpec));
-        return new JSONObject(result);
+    private JSONObject getJSONObject(String urlSpec){
+        try {
+            String result = new String(getUrlBytes(urlSpec));
+            return new JSONObject(result);
+        } catch (IOException io) {
+            Log.e(TAG, "Failed to connect", io);
+        } catch (JSONException ioj) {
+            Log.e(TAG, "Failed to convert json", ioj);
+        }
+        return null;
     }
-    //превращает ответ сервера в JSON vfccbd
-    JSONArray getJSONArray(String urlSpec) throws IOException, JSONException {
-        String result=new String(getUrlBytes(urlSpec));
-        return new JSONArray(result);
+    //превращает ответ сервера в JSON массив
+    private JSONArray getJSONArray(String urlSpec){
+        String result= null;
+        try {
+            result = new String(getUrlBytes(urlSpec));
+            return new JSONArray(result);
+        } catch (IOException io) {
+            Log.e(TAG, "Failed to connect", io);
+        } catch (JSONException ioj) {
+            Log.e(TAG, "Failed to convert json", ioj);
+        }
+        return null;
     }
     //превращает ответ сервера в массив байт
     byte[] getUrlBytes(String urlSpec) throws IOException {
@@ -72,30 +86,30 @@ public class SiteConnector {
     }
         //разбивает ответ сервера на массив объектов и количество объектов на сервере
         //принимает в себя начальный индекс объекта и количество возвращаемых объектов после него
-        public ArrayList<PhotoGalleryItem> fetchPhotoItems(int offset,int lenght){
+        public ArrayList<GalleryItem> fetchItems(int offset,int lenght,boolean video){
             JSONArray jsonValues=null;
+            String mEndPoint=video?OPRST_VIDEO_ENDPOINT:OPRST_PHOTO_ENDPOINT;
+            String key=video?"videoItems":"photoItems";
             try{
-                String url=Uri.parse(OPRST_PHOTO_ENDPOINT).buildUpon()
+                String url=Uri.parse(mEndPoint).buildUpon()
                         .appendQueryParameter("offset", Integer.toString(offset))
                         .appendQueryParameter("lenght", Integer.toString(lenght))
                         .build().toString();
                 JSONObject jsonObject=getJSONObject(url);
                 JSONArray jsonNames=jsonObject.names();
-                jsonValues=jsonObject.getJSONArray("photoItems");
+                jsonValues=jsonObject.getJSONArray(key);
                 setCount(jsonObject.getInt("count"));
-            }catch(IOException ioe){
-                Log.e(TAG, "Failed to fetch items",ioe);
             }catch(JSONException ioj){
                 Log.e(TAG, "Failed to convert json",ioj);
             }
-            return photoFromJson(jsonValues);
+            return fromJson(jsonValues);
         }
-        //преобразует JSON массив в массив объектов PhotoGalleryItem используя метод fromJson
-        private ArrayList<PhotoGalleryItem> photoFromJson(JSONArray json){
-            ArrayList<PhotoGalleryItem> mCollages = new ArrayList<PhotoGalleryItem>();
+        //преобразует JSON массив в массив объектов GalleryItem используя метод fromJson
+        private ArrayList<GalleryItem> fromJson(JSONArray json){
+            ArrayList<GalleryItem> mCollages = new ArrayList<GalleryItem>();
                 try {
                     for (int index = 0; index < json.length(); ++index) {
-                        PhotoGalleryItem item = PhotoGalleryItem.fromJson(json.
+                        GalleryItem item = GalleryItem.fromJson(json.
                                 getJSONObject(index));
                         if (null != item) mCollages.add(item);
                     }
@@ -104,36 +118,21 @@ public class SiteConnector {
                 }
             return mCollages;
         }
-    public ArrayList<VideoGalleryItem> fetchVideoItems(int offset,int lenght){
-        JSONArray jsonValues=null;
-        try{
-            String url=Uri.parse(OPRST_VIDEO_ENDPOINT).buildUpon()
-                    .appendQueryParameter("offset", Integer.toString(offset))
-                    .appendQueryParameter("lenght", Integer.toString(lenght))
-                    .build().toString();
-            JSONObject jsonObject=getJSONObject(url);
-            JSONArray jsonNames=jsonObject.names();
-            jsonValues=jsonObject.getJSONArray("photoItems");
-            setCount(jsonObject.getInt("count"));
-        }catch(IOException ioe){
-            Log.e(TAG, "Failed to fetch items",ioe);
-        }catch(JSONException ioj){
-            Log.e(TAG, "Failed to convert json",ioj);
-        }
-        return videoFromJson(jsonValues);
-    }
-    //преобразует JSON массив в массив объектов PhotoGalleryItem используя метод fromJson
-    private ArrayList<VideoGalleryItem> videoFromJson(JSONArray json){
-        ArrayList<VideoGalleryItem> mCollages = new ArrayList<VideoGalleryItem>();
+    //преобразует JSON массив в массив объектов GalleryItem используя метод fromJson
+    public ArrayList<String> jsonToStrings(String id){
+        String url=Uri.parse(OPRST_PHOTO_GALLERY_ENDPOINT).buildUpon()
+                .appendQueryParameter("id", id)
+                .build().toString();
+        JSONArray json=getJSONArray(url);
+        ArrayList<String> strings = new ArrayList<String>();
         try {
             for (int index = 0; index < json.length(); ++index) {
-                VideoGalleryItem item = VideoGalleryItem.fromJson(json.
-                        getJSONObject(index));
-                if (null != item) mCollages.add(item);
+                String string = json.getString(index);
+                if (null != string) strings.add(string);
             }
         } catch (JSONException ioj) {
             Log.e(TAG, "Failed to convert json", ioj);
         }
-        return mCollages;
+        return strings;
     }
 }

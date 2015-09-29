@@ -1,5 +1,6 @@
 package com.tyaa.photogallery;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import org.json.JSONObject;
 
@@ -22,11 +24,12 @@ import java.util.ArrayList;
 //тут мы становимся гордым владельцем пустого экрана
 public class GalleryFragment extends Fragment{
     private static final String TAG = "GalleryFragment";
+    public static final String EXTRA_RESULT = "com.tyaa.photogallery.result";
 
     GridView mPhotoGrid;
     GridView mVideoGrid;
-    ArrayList<PhotoGalleryItem> mPhotoGalleryItems;
-    ArrayList<VideoGalleryItem> mVideoGalleryItems;
+    ArrayList<GalleryItem> mPhotoGalleryItems;
+    ArrayList<GalleryItem> mVideoGalleryItems;
     ThumbDownloader<ImageView> mThumbThread;
 
     @Override
@@ -48,8 +51,8 @@ public class GalleryFragment extends Fragment{
         Log.i(TAG, "Background thread started");
 
     }
-    private class GalleryItemAdapter<T> extends ArrayAdapter<T> {
-        public GalleryItemAdapter(ArrayList<T> items) {
+    private class GalleryItemAdapter<GalleryItem> extends ArrayAdapter<GalleryItem> {
+        public GalleryItemAdapter(ArrayList<GalleryItem> items) {
             super(getActivity(), 0, items);
         }
         @Override
@@ -58,21 +61,27 @@ public class GalleryFragment extends Fragment{
                 convertView = getActivity().getLayoutInflater()
                         .inflate(R.layout.gallery_item, parent, false);
             }
-
             ImageView imageView = (ImageView)convertView
                     .findViewById(R.id.gallery_item_imageView);
             imageView.setImageResource(R.drawable.photo_default);
-            T item = getItem(position);
-            try {
-                String url=item.getClass().getMethod("getPreview").invoke(item).toString();
-                mThumbThread.queueThumbnail(imageView,url);
-            } catch (InvocationTargetException ioit) {
-                Log.e(TAG, "Failed to invoke method", ioit);
-            } catch (NoSuchMethodException ionsm) {
-                Log.e(TAG, "Failed to find method", ionsm);
-            } catch (IllegalAccessException ioia) {
-                Log.e(TAG, "Failed access to private method", ioia);
-            }
+            TextView textView=(TextView)convertView
+                    .findViewById(R.id.gallery_item_title);
+            final com.tyaa.photogallery.GalleryItem item =
+                    (com.tyaa.photogallery.GalleryItem)getItem(position);
+            mThumbThread.queueThumbnail(imageView, item);
+            //тут можно вызывать просмотрщик фото или ивдео
+            imageView.setOnLongClickListener(new View.OnLongClickListener() {
+                public boolean onLongClick(View arg0) {
+                    if (item.getYoutube() == null) {
+                        Intent i = new Intent(getActivity(), PhotoActivity.class);
+                        i.putExtra(EXTRA_RESULT, item.getId());
+                        startActivity(i);
+                    } else {
+
+                    }
+                    return true;
+                }
+            });
             return convertView;
         }
     }
@@ -107,13 +116,13 @@ public class GalleryFragment extends Fragment{
         }
     }
     //получение фото галереи в фоновом потоке
-    private class FetchPhotoItemsTask extends AsyncTask<Integer,Void,ArrayList<PhotoGalleryItem>> {
+    private class FetchPhotoItemsTask extends AsyncTask<Integer,Void,ArrayList<GalleryItem>> {
         @Override
-        protected ArrayList<PhotoGalleryItem> doInBackground(Integer... params) {
-            return new SiteConnector().fetchPhotoItems(params[0], params[1]);
+        protected ArrayList<GalleryItem> doInBackground(Integer... params) {
+            return new SiteConnector().fetchItems(params[0], params[1],false);
         }
         @Override
-        protected void onPostExecute(ArrayList<PhotoGalleryItem> photoCollages){
+        protected void onPostExecute(ArrayList<GalleryItem> photoCollages){
             mPhotoGalleryItems =photoCollages;
             setupPhotoAdapter();
         }
@@ -127,13 +136,13 @@ public class GalleryFragment extends Fragment{
         }
     }
     //получение видео галереи в фоновом потоке
-    private class FetchVideoItemsTask extends AsyncTask<Integer,Void,ArrayList<VideoGalleryItem>> {
+    private class FetchVideoItemsTask extends AsyncTask<Integer,Void,ArrayList<GalleryItem>> {
         @Override
-        protected ArrayList<VideoGalleryItem> doInBackground(Integer... params) {
-            return new SiteConnector().fetchVideoItems(params[0], params[1]);
+        protected ArrayList<GalleryItem> doInBackground(Integer... params) {
+            return new SiteConnector().fetchItems(params[0], params[1],true);
         }
         @Override
-        protected void onPostExecute(ArrayList<VideoGalleryItem> photoCollages){
+        protected void onPostExecute(ArrayList<GalleryItem> photoCollages){
             mVideoGalleryItems =photoCollages;
             setupVideoAdapter();
         }

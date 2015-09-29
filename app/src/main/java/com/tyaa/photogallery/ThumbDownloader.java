@@ -74,9 +74,9 @@ public class ThumbDownloader <Token> extends HandlerThread {
         mHandler.removeMessages(MESSAGE_DOWNLOAD);
         requestMap.clear();
     }
-    public void queueThumbnail(Token token, String url) {
-        Log.i(TAG, "Got an URL: " + url);
-        requestMap.put(token, url);
+    public void queueThumbnail(Token token, GalleryItem item) {
+        Log.i(TAG, "Got an URL: " + item.getThumb());
+        requestMap.put(token, item.getThumb());
         mHandler.obtainMessage(MESSAGE_DOWNLOAD, token).sendToTarget();
     }
 
