@@ -1,4 +1,4 @@
-package com.tyaa.photogallery;
+/*package com.tyaa.photogallery;
 
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -14,3 +14,4 @@ public class PhotoGalleryActivity extends SingleFragmentActivity {
         return new PhotoGalleryFragment();
     }
 }
+*/
