@@ -13,4 +13,5 @@
     <string name="new_pictures_text">You have new pictures in PhotoGallery.</string>
     <string name="video_grid_title">ВидOS</string>
     <string name="photo_grid_title">ФотOS</string>
+    <string name="text_tab_header"> OPRST</string>
 </resources>

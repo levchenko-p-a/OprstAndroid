@@ -96,7 +96,6 @@ public class SiteConnector {
                         .appendQueryParameter("lenght", Integer.toString(lenght))
                         .build().toString();
                 JSONObject jsonObject=getJSONObject(url);
-                JSONArray jsonNames=jsonObject.names();
                 jsonValues=jsonObject.getJSONArray(key);
                 setCount(jsonObject.getInt("count"));
             }catch(JSONException ioj){
