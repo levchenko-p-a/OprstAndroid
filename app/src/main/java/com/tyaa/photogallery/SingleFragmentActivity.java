@@ -1,18 +1,18 @@
-package com.tyaa.photogallery;
+/*package com.tyaa.photogallery;
 
-import android.os.Bundle;
+        import android.os.Bundle;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
+        import android.support.v4.app.Fragment;
+        import android.support.v4.app.FragmentActivity;
+        import android.support.v4.app.FragmentManager;
 
 public abstract class SingleFragmentActivity extends FragmentActivity {
     protected abstract Fragment createFragment();
 
     protected int getLayoutResId() {
-    	return R.layout.activity_fragment;
+        return R.layout.activity_fragment;
     }
-    
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,8 +23,9 @@ public abstract class SingleFragmentActivity extends FragmentActivity {
         if (fragment == null) {
             fragment = createFragment();
             manager.beginTransaction()
-                .add(R.id.fragmentContainer, fragment)
-                .commit();
+                    .add(R.id.fragmentContainer, fragment)
+                    .commit();
         }
     }
 }
+*/
