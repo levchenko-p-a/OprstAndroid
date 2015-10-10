@@ -1,6 +1,5 @@
-package com.tyaa.photogallery;
+package com.tyaa.photogallery.Tab;
 
-import android.app.Activity;
 import android.content.Intent;
 
 import android.os.Bundle;
@@ -9,14 +8,14 @@ import android.widget.TabHost;
 
 import android.app.TabActivity;
 
+import com.tyaa.photogallery.R;
+
 
 /**
  * Created by Kitsune on 09.10.2015.
  */
 public class TabAct extends TabActivity {
-
     TabHost tabHost;
-
     /** Called when the activity is first created. */
 
     public void onCreate(Bundle savedInstanceState) {

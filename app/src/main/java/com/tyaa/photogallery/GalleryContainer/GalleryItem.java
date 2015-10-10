@@ -1,4 +1,4 @@
-package com.tyaa.photogallery;
+package com.tyaa.photogallery.GalleryContainer;
 
 import android.util.Log;
 
@@ -10,8 +10,6 @@ import org.json.JSONObject;
  */
 public class GalleryItem {
     public static final String TAG = "GalleryItem";
-    protected static final String OPRST_ENDPOINT = "http://oprst.com.ua/";
-    protected static final String OPRST_THUMBS="assets/.thumbs/images/photo-preview/";
 
     private int id;
     private String pagetitle;
@@ -19,33 +17,37 @@ public class GalleryItem {
     private String caption;
     private String preview;
     private boolean our;
-    protected String youtube;
+    private String youtube;
+    private String thumb;
 
-    public GalleryItem(int id, String pagetitle, String alias, String caption, String preview,boolean our, String youtube) {
+    public GalleryItem(int id, String pagetitle, String alias, String caption, String preview,
+                       String thumb,boolean our, String youtube) {
         setId(id);
         setPagetitle(pagetitle);
         setAlias(alias);
         setCaption(caption);
         setPreview(preview);
+        setThumb(thumb);
         setOur(our);
         setYoutube(youtube);
     }
-    public static GalleryItem fromJson(JSONObject object) {
+    public static GalleryItem fromJson(JSONObject object,String endPoint) {
         int id=0;
-        String pagetitle=null,alias=null,caption=null,preview=null,our=null,
+        String pagetitle=null,alias=null,caption=null,preview=null,thumb=null,our=null,
                 youtube=null;
         try {
             id = object.getInt("id");
             pagetitle= object.getString("pagetitle");
             alias= object.getString("alias");
             caption= object.getString("caption");
-            preview= object.getString("preview");
+            preview= endPoint+object.getString("preview");
+            thumb= endPoint+object.getString("thumb");
             our = object.getString("our");
             youtube= object.getString("youtube");
-            return new GalleryItem(id,pagetitle,alias,caption,preview,Boolean.getBoolean(our),youtube);
+            return new GalleryItem(id,pagetitle,alias,caption,preview,thumb,Boolean.getBoolean(our),youtube);
         } catch (JSONException ioj) {
             Log.i(TAG, "Get VideoGallery", ioj);
-            return new GalleryItem(id,pagetitle,alias,caption,preview,Boolean.getBoolean(our),youtube);
+            return new GalleryItem(id,pagetitle,alias,caption,preview,thumb,Boolean.getBoolean(our),youtube);
         }
     }
     public String getYoutube() {
@@ -57,8 +59,7 @@ public class GalleryItem {
     }
 
     public String getThumb() {
-        return OPRST_ENDPOINT+OPRST_THUMBS+
-                getPreview().substring(getPreview().lastIndexOf('/') + 1, getPreview().length() );
+        return thumb;
     }
     public boolean isOur() {
         return our;
@@ -68,8 +69,12 @@ public class GalleryItem {
         this.our = our;
     }
 
+    public void setThumb(String thumb) {
+        this.thumb = thumb;
+    }
+
     public String getPreview() {
-        return OPRST_ENDPOINT+preview;
+        return preview;
     }
 
     public void setPreview(String preview) {

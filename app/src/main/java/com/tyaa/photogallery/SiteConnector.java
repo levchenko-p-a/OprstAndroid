@@ -3,17 +3,16 @@ package com.tyaa.photogallery;
         import android.net.Uri;
         import android.util.Log;
 
+        import com.tyaa.photogallery.GalleryContainer.GalleryItem;
+        import com.tyaa.photogallery.PhotoGallery.PhotoGalleryItem;
+
         import org.json.JSONArray;
         import org.json.JSONException;
         import org.json.JSONObject;
-        import org.xmlpull.v1.XmlPullParser;
-        import org.xmlpull.v1.XmlPullParserException;
-        import org.xmlpull.v1.XmlPullParserFactory;
 
         import java.io.ByteArrayOutputStream;
         import java.io.IOException;
         import java.io.InputStream;
-        import java.io.StringReader;
         import java.net.HttpURLConnection;
         import java.net.URL;
         import java.util.ArrayList;
@@ -23,12 +22,15 @@ package com.tyaa.photogallery;
  */
 public class SiteConnector {
     public static final String TAG = "SiteConnector";
-    private static final String OPRST_PHOTO_ENDPOINT = "http://oprst.com.ua/rest/getItemsPhoto.php";
-    private static final String OPRST_VIDEO_ENDPOINT = "http://oprst.com.ua/rest/getItemsVideo.php";
+    //protected static final String OPRST_ENDPOINT = "http://oprst.com.ua/";
+    protected static final String OPRST_ENDPOINT = "http://weed.esy.es/";
+    private static final String OPRST_PHOTO_ENDPOINT = OPRST_ENDPOINT+"rest/getItemsPhoto.php";
+    private static final String OPRST_VIDEO_ENDPOINT = OPRST_ENDPOINT+"rest/getItemsVideo.php";
     private static final String OPRST_PHOTO_GALLERY_ENDPOINT =
-            "http://oprst.com.ua/rest/getItemsPhotoGallery.php";
-    private int mCount;
+            OPRST_ENDPOINT+"rest/getItemsPhotoGallery.php";
 
+    private int mCount;
+    private String mThumb;
     public int getCount() {
         return mCount;
     }
@@ -37,16 +39,15 @@ public class SiteConnector {
         this.mCount = count;
     }
     //превращает ответ сервера в строку
-    private String getUrl(String urlSpec) throws IOException {
-        return new String(getUrlBytes(urlSpec));
+    private String getUrlR(String urlSpec) {
+       return new String(getUrlBytes(urlSpec));
     }
     //превращает ответ сервера в JSON объект
     private JSONObject getJSONObject(String urlSpec){
         try {
-            String result = new String(getUrlBytes(urlSpec));
-            return new JSONObject(result);
-        } catch (IOException io) {
-            Log.e(TAG, "Failed to connect", io);
+            String result = getUrlR(urlSpec);
+            JSONObject json=new JSONObject(result);
+            return json;
         } catch (JSONException ioj) {
             Log.e(TAG, "Failed to convert json", ioj);
         }
@@ -56,20 +57,20 @@ public class SiteConnector {
     private JSONArray getJSONArray(String urlSpec){
         String result= null;
         try {
-            result = new String(getUrlBytes(urlSpec));
-            return new JSONArray(result);
-        } catch (IOException io) {
-            Log.e(TAG, "Failed to connect", io);
+            result = getUrlR(urlSpec);
+            JSONArray json=new JSONArray(result);
+            return json;
         } catch (JSONException ioj) {
             Log.e(TAG, "Failed to convert json", ioj);
         }
         return null;
     }
     //превращает ответ сервера в массив байт
-    byte[] getUrlBytes(String urlSpec) throws IOException {
-        URL url = new URL(urlSpec);
-        HttpURLConnection connection = (HttpURLConnection)url.openConnection();
+    byte[] getUrlBytes(String urlSpec){
+        HttpURLConnection connection =null;
         try {
+        URL url = new URL(urlSpec);
+        connection = (HttpURLConnection)url.openConnection();
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             InputStream in = connection.getInputStream();
             if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
@@ -82,9 +83,14 @@ public class SiteConnector {
             }
             out.close();
             return out.toByteArray();
+        }catch (IOException io) {
+            Log.e(TAG, "Failed to connect", io);
         } finally {
+            if(connection!=null){
             connection.disconnect();
+            }
         }
+        return null;
     }
     //разбивает ответ сервера на массив объектов и количество объектов на сервере
     //принимает в себя начальный индекс объекта и количество возвращаемых объектов после него
@@ -103,16 +109,18 @@ public class SiteConnector {
         }catch(JSONException ioj){
             Log.e(TAG, "Failed to convert json",ioj);
         }
-        return fromJson(jsonValues);
+        return fromJson(jsonValues,video);
     }
     //преобразует JSON массив в массив объектов GalleryItem используя метод fromJson
-    private ArrayList<GalleryItem> fromJson(JSONArray json){
+    private ArrayList<GalleryItem> fromJson(JSONArray json, boolean video){
         ArrayList<GalleryItem> mCollages = new ArrayList<GalleryItem>();
         try {
             for (int index = 0; index < json.length(); ++index) {
                 GalleryItem item = GalleryItem.fromJson(json.
-                        getJSONObject(index));
-                if (null != item) mCollages.add(item);
+                        getJSONObject(index),OPRST_ENDPOINT);
+                if (null != item) {
+                    mCollages.add(item);
+                }
             }
         } catch (JSONException ioj) {
             Log.e(TAG, "Failed to convert json", ioj);
@@ -120,20 +128,38 @@ public class SiteConnector {
         return mCollages;
     }
     //преобразует JSON массив в массив объектов GalleryItem используя метод fromJson
-    public ArrayList<String> jsonToStrings(String id){
+    public PhotoGalleryItem<String> jsonToStrings(String id){
         String url=Uri.parse(OPRST_PHOTO_GALLERY_ENDPOINT).buildUpon()
                 .appendQueryParameter("id", id)
                 .build().toString();
         JSONArray json=getJSONArray(url);
-        ArrayList<String> strings = new ArrayList<String>();
+        PhotoGalleryItem<String> photos = new PhotoGalleryItem<String>();
+        String endPoint=OPRST_ENDPOINT+"assets/galleries/"+id+"/";
+        photos.setEndPoint(endPoint);
         try {
             for (int index = 0; index < json.length(); ++index) {
                 String string = json.getString(index);
-                if (null != string) strings.add(string);
+                if (null != string) {
+                    switch (string) {
+                        case ".":
+                            break;
+                        case "..":
+                            break;
+                        case "original":
+                            photos.setOriginals(endPoint+string+"/");
+                            break;
+                        case "thumbs":
+                            photos.setThumbs(endPoint+string+"/");
+                            break;
+                        default:
+                            photos.add(string);
+                            break;
+                    }
+                }
             }
         } catch (JSONException ioj) {
             Log.e(TAG, "Failed to convert json", ioj);
         }
-        return strings;
+        return photos;
     }
 }
