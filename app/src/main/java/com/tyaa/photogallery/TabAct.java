@@ -1,4 +1,4 @@
-package com.tyaa.photogallery.Tab;
+package com.tyaa.photogallery;
 
 import android.content.Intent;
 
@@ -8,13 +8,11 @@ import android.widget.TabHost;
 
 import android.app.TabActivity;
 
-import com.tyaa.photogallery.R;
-
-
 /**
  * Created by Kitsune on 09.10.2015.
  */
 public class TabAct extends TabActivity {
+
     TabHost tabHost;
     /** Called when the activity is first created. */
 
@@ -22,8 +20,9 @@ public class TabAct extends TabActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_layout);
 
-        tabHost=(TabHost)findViewById(android.R.id.tabhost);
-        tabHost.setup();
+
+        tabHost = getTabHost();
+
 
         TabHost.TabSpec tabSpec;
 
@@ -37,12 +36,18 @@ public class TabAct extends TabActivity {
         tabHost.addTab(tabSpec);
 
         tabSpec = tabHost.newTabSpec("tag2");
-
+        // указываем название и картинку
+        // в нашем случае вместо картинки идет xml-файл,
+        // который определяет картинку по состоянию вкладки
         tabSpec.setIndicator("ВидOS");
         tabSpec.setContent(new Intent(this, TabVideoActivivty.class));
         tabHost.addTab(tabSpec);
 
         tabHost.setCurrentTabByTag("tag1");
+
+
     }
+
+
 }
 
