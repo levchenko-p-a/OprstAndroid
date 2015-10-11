@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/background_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerInside"
+        android:layout_weight="1"
+        />
+    <TableRow
+        android:gravity="center|bottom"
+        android:layout_weight="0"
+        >
+        <Button android:id="@+id/video_playButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/video_play"
+            />
+
+        <Button android:id="@+id/hellomoon_stopButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/video_stop"
+            />
+    </TableRow>
+
+</TableLayout>

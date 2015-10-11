@@ -33,6 +33,8 @@
         <activity android:name=".Tab.TabVideoActivivty"></activity>
         <activity android:name=".PhotoGallery.PhotoGalleryActivity"></activity>
         <activity android:name=".PhotoGallery.Photo.PhotoActivity"></activity>
+        <activity android:name=".VideoGallery.VideoGalleryActivity"></activity>
+        <activity android:name=".VideoGallery.Video.VideoActivity"></activity>
     </application>
 
 </manifest>
