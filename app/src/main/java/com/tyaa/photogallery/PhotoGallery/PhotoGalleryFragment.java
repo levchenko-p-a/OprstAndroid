@@ -1,5 +1,6 @@
 package com.tyaa.photogallery.PhotoGallery;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tyaa.photogallery.GalleryContainer.GalleryFragment;
+import com.tyaa.photogallery.PhotoGallery.Photo.PhotoActivity;
 import com.tyaa.photogallery.R;
 import com.tyaa.photogallery.SiteConnector;
 import com.tyaa.photogallery.ThumbDownloader;
@@ -24,6 +26,7 @@ import com.tyaa.photogallery.ThumbDownloader;
  */
 public class PhotoGalleryFragment extends Fragment {
     private static final String TAG = "PhotoGalleryFragment";
+    public static final String EXTRA_RESULT = "com.tyaa.photogallery.photogalleryfragment.result";
 
     private GridView mGrid;
     private PhotoGalleryItem<String> photos;
@@ -85,13 +88,15 @@ public class PhotoGalleryFragment extends Fragment {
             imageView.setImageResource(R.drawable.photo_default);
             TextView textView=(TextView)convertView
                     .findViewById(R.id.gallery_item_title);
-            String item = getItem(position);
+            final String item = getItem(position);
             java.lang.String image=(java.lang.String)items.getThumbs()+item;
             mThumbThread.queueThumbnail(imageView, image);
             //тут можно вызывать просмотрщик полной версии
             imageView.setOnLongClickListener(new View.OnLongClickListener() {
                 public boolean onLongClick(View arg0) {
-
+                    Intent i = new Intent(getActivity(), PhotoActivity.class);
+                    i.putExtra(EXTRA_RESULT,(java.lang.String)items.getEndPoint()+item);
+                    startActivity(i);
                     return true;
                 }
             });

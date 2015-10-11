@@ -32,6 +32,7 @@
         <activity android:name=".Tab.TabPhotoActivivty"></activity>
         <activity android:name=".Tab.TabVideoActivivty"></activity>
         <activity android:name=".PhotoGallery.PhotoGalleryActivity"></activity>
+        <activity android:name=".PhotoGallery.Photo.PhotoActivity"></activity>
     </application>
 
 </manifest>
