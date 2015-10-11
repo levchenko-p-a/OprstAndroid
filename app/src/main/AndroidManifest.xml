@@ -20,7 +20,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".TabAct"
+            android:name=".Tab.TabAct"
             android:label="@string/app_name"
             android:launchMode="singleTop">
 
@@ -29,8 +29,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TabPhotoActivivty"></activity>
-        <activity android:name=".TabVideoActivivty"></activity>
+        <activity android:name=".Tab.TabPhotoActivivty"></activity>
+        <activity android:name=".Tab.TabVideoActivivty"></activity>
+        <activity android:name=".PhotoGallery.PhotoGalleryActivity"></activity>
     </application>
 
 </manifest>
