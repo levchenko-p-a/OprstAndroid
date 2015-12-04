@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:weightSum="11">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        android:layout_weight="1">
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/button_itstep"
+            android:background="@drawable/itstep"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/ron_cubano"
+            android:background="@drawable/ron_cubano"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/fayno"
+            android:background="@drawable/fayno"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:weightSum="3"
+        android:layout_weight="1">
+    <Button
+        android:layout_weight="1"
+        android:id="@+id/pumb"
+        android:background="@drawable/pumb"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    <Button
+        android:layout_weight="1"
+        android:id="@+id/gusi_lebedi"
+        android:background="@drawable/gusi_lebedi"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    <Button
+        android:layout_weight="1"
+        android:id="@+id/mar_o629"
+        android:background="@drawable/mar_0629"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        android:layout_weight="1">
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/funtura"
+            android:background="@drawable/funtura"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/imperial"
+            android:background="@drawable/imperial"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/azovmash"
+            android:background="@drawable/azovmash"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        android:layout_weight="1">
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/grizli"
+            android:background="@drawable/grizli"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/mar_photo_school"
+            android:background="@drawable/mar_photo_school"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/goldenbyte"
+            android:background="@drawable/gooldenbyte"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        android:layout_weight="1">
+    <Button
+        android:layout_weight="1"
+        android:id="@+id/kirpich"
+        android:background="@drawable/kirpich"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    <Button
+        android:layout_weight="1"
+        android:id="@+id/trinity"
+        android:background="@drawable/trinity"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    <Button
+        android:layout_weight="1"
+        android:id="@+id/stb"
+        android:background="@drawable/stb"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        android:layout_weight="1">
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/pobeda"
+            android:background="@drawable/pobeda"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/multiplex"
+            android:background="@drawable/multuplex"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/dvoretsmetallurgov"
+            android:background="@drawable/dvoretsmetallurgov"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        android:layout_weight="1">
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/mtv"
+            android:background="@drawable/mtv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/gidmariupol"
+            android:background="@drawable/gidmariupo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/tamtam"
+            android:background="@drawable/tamtam"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        android:layout_weight="1">
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/portcity"
+            android:background="@drawable/portcity"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/asberg"
+            android:background="@drawable/asberg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/plaza"
+            android:background="@drawable/plaza"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        android:layout_weight="1">
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/coral"
+            android:background="@drawable/coral"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/barbaris"
+            android:background="@drawable/barbaris"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/molodejka"
+            android:background="@drawable/molodejka"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        android:layout_weight="1">
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/crazymaam"
+            android:background="@drawable/crazymaam"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/ligamarakuya"
+            android:background="@drawable/ligamarakuya"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/mastershow"
+            android:background="@drawable/mastershow"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        android:layout_weight="1">
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/nefertity"
+            android:background="@drawable/nefertity"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/autoradio"
+            android:background="@drawable/avtoradio"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/redcups"
+            android:background="@drawable/redcups"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+    </LinearLayout>
+</ScrollView>

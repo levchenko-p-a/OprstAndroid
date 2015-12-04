@@ -2,25 +2,37 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
+             android:background="@drawable/border"
     >
-
-    <RelativeLayout
+    <TextView
+        android:id="@+id/gallery_item_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#FF0000"
+        android:layout_gravity="center"/>
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </RelativeLayout>
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/abc_action_bar_content_inset_material">
 
-    <ImageView
-    android:id="@+id/gallery_item_imageView"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_gravity="center"
-    android:scaleType="centerCrop" />
+        <TextView
+        android:id="@+id/gallery_item_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#FF0000"
+        android:layout_gravity="center"
+        android:autoText="true"
+        android:layout_margin="@dimen/abc_control_corner_material"/>
 
-<TextView
-    android:id="@+id/gallery_item_title"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:textColor="#FF0000"
-    android:layout_gravity="center"/>
+        <ImageView
+            android:id="@+id/gallery_item_imageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:scaleType="centerCrop"
 
+            />
+    </LinearLayout>
 </FrameLayout>

@@ -10,17 +10,18 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:id="@+id/photoTitle" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/photoTitle" />
 
         <GridView
-            android:layout_width="wrap_content"
+            android:id="@+id/itemGrid"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:columnWidth="120dp"
-            android:numColumns="auto_fit"
-            android:id="@+id/itemGrid"/>
+            android:columnWidth="@dimen/gallery_column_width"
+            >
+        </GridView>
 
     </LinearLayout>
 </RelativeLayout>
