@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/begin_pager_button"/>
+
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/nav_left"
+            android:id="@+id/prev_pager_button"
+            android:layout_weight="10"/>
+
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/navigation_pager_count"
+        android:layout_weight="10"
+        android:gravity="center"
+        android:inputType="number"
+        android:imeOptions="actionGo"/>
+
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/nav_right"
+            android:id="@+id/next_pager_button"
+            android:layout_weight="10"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/end_pager_button"/>
+</LinearLayout>
